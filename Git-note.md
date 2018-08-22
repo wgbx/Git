@@ -1,6 +1,7 @@
 # <p align = "center"> Git笔记 </p>
 ## 文件说明
 - Git开发常用命令，是在 [hongiii](https://github.com/hongiii/gitNotes_from_Liao/blob/master/gitNotes_from_Liao.md) 的基础上在进行补充
+
 ## Git介绍
 - Git是分布式版本控制系统
 - 集中式VS分布式，SVN VS Git
@@ -10,6 +11,7 @@
      - 自己可以在脱机环境查看开发的版本历史。
      - 多人开发时如果充当中央仓库的Git仓库挂了，可以随时创建一个新的中央仓库然后同步就立刻恢复了中央库。
 ## Git命令
+
 ### Git配置
 ```bash
 $ git config --global user.name "Your Name"
@@ -194,6 +196,13 @@ $ git revert git revert <commit-id>
 - 撤销某次操作，此次操作之前和之后的commit和history都会保留，并且把这次撤销作为一次最新的提交。
 - 会打开vim编辑器，请学习相关知识
 
+### 修改上一次提交的commit信息
+```bash
+$ git commit --amend -m "description"
+```
+- 可以直接修改上一次的提交信息
+- 也可以`git add <file>`再与上一次的修改提交信息合并提交
+
 ### 合并多个commit为一个完整commit
 ```bash
 $ git rebase -i  [startpoint]  [endpoint]
@@ -202,6 +211,15 @@ $ git rebase -i  [startpoint]  [endpoint]
 - 即弹出交互式的界面让用户编辑完成合并操作，[startpoint] [endpoint]则指定了一个编辑区间
 如果不指定[endpoint]，则该区间的终点默认是当前分支HEAD所指向的commit(注：该区间指定的是一个前开后闭的区间)。
 - 在查看到了log日志后，我们运行以下命令：`git rebase -i 36224db`或`git rebase -i HEAD~3 `
+
+### 选择一部分提交的代码合并到另一个分支
+```bash
+$ git cherry-pick <commit-id]
+```
+- 开闭区间
+- 单个commit只需要`git cherry-pick <commit-id>`
+- 多个commit需要`git cherry-pick <commit-id> <commit-id>`
+- 多个commit需要`git cherry-pick <commit-id>..[commit-id]`
 
 ### 分支
 #### 创建分支
@@ -250,19 +268,49 @@ $ git log --graph
 ```bash
 $ git checkout -b <local-barnch-name> origin/<remote-barnch-name>  
 ```
-
+### 工作现场
 #### 保存工作现场
 ```bash
 $ git stash
 ```
+- 保存当前工作进度，会把暂存区和工作区的改动保存起来
+- 执行完这个命令后，在运行`git status`命令，就会发现当前是一个干净的工作区，没有任何改动
+- 使用`git stash save "description"`可以添加一些注释
+
 #### 查看工作现场
 ```bash
 $ git stash list
 ```
+- 显示保存进度的列表。也就意味着，git stash命令可以多次执行
+
 #### 恢复工作现场
 ```bash
 $ git stash pop
 ```
+- `git stash pop` 
+- 恢复最新的进度到工作区，git默认会把工作区和暂存区的改动都恢复到工作区
+- `git stash pop --index`
+- 恢复最新的进度到工作区和暂存区（尝试将原来暂存区的改动还恢复到暂存区）
+- `git stash pop stash@{1}`
+- 恢复指定的进度到工作区。`stash_id`是通过`git stash list`命令得到的 
+- 通过`git stash pop`命令恢复进度后，会删除当前进度。
+
+```bash
+$ git stash apply
+```
+- 除了不删除恢复的进度之外，其余和`git stash pop` 命令一样
+
+#### 删除工作现场
+```bash
+$ git stash drop <stash_id>
+```
+- 删除一个存储的进度。如果不指定`stash_id`，则默认删除最新的存储进度。
+
+```bash
+$ git stash clear
+```
+- 删除所有存储的进度
+
 #### 丢弃一个没有合并过的分支
 ```bash
 $ git branch -D <branch-name>
