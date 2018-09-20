@@ -395,3 +395,21 @@ $ git tag -d <tagname>
 ```bash
 $ git push origin :refs/tags/<tagname>
 ```
+
+#### 缩写配置
+- 在桌面同级目录下的.gitconfig中配置该缩写命令
+```bash
+[alias]
+   l = log
+   s = status -s
+   a = add .
+   d = diff
+   br = branch
+   cm = commit -m
+   st = status
+   pl = pull
+   ps = push
+   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+   cam = commit --amend -m
+   last = log -1
+```
