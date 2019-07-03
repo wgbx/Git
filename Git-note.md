@@ -406,10 +406,12 @@ $ git push origin :refs/tags/<tagname>
    d = diff
    br = branch
    cm = commit -m
+   ck = checkout
    st = status
    pl = pull
    ps = push
    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
    cam = commit --amend -m
    last = log -1
+   reset = reset --hard
 ```
